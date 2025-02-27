@@ -14,11 +14,11 @@
         <h2>ECUACIÓN COMPLEJA</h2>
         <div class="inputs">
             <h3>Coeficientes</h3>
-            <label>A: <input type="number" id="coefA" value="2"></label>
+            <label>A: <input type="number" id="coefA" value="4"></label>
             <label>B: <input type="number" id="coefB" value="3"></label>
             <label>C: <input type="number" id="coefC" value="1"></label>
             <label>D: <input type="number" id="coefD" value="2"></label>
-            <label>E: <input type="number" id="coefE" value="3"></label>
+            <label>E: <input type="number" id="coefE" value="5"></label>
             <h3>Valores de X</h3>
             <label>Mínimo X: <input type="number" id="xMin" value="-5"></label>
             <label>Máximo X: <input type="number" id="xMax" value="5"></label>
@@ -27,7 +27,7 @@
         </div>
         <div class="resultados">
             <h3>Ecuación:</h3>
-            <p id="equacion">\[ Y = \frac{\sin(aX) + \cos(bX)}{\sqrt{X+c}} + \frac{\cos(dX) + \sin(eX)}{\sqrt{X+1}} + \frac{1}{X+d} \]</p>
+            <p id="equacion">\[ Y = \frac{\sin(aX) + \cos(bX)}{\sqrt{|X+c|}} + \frac{\cos(dX) + \sin(eX)}{\sqrt{|X+1|}} + \frac{1}{X+d} \]</p>
             <h3>Resultados</h3>
             <p>Valor Y Mínimo: <span id="yMin">-</span></p>
             <p>Valor Y Máximo: <span id="yMax">-</span></p>
