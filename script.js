@@ -13,12 +13,14 @@ document.getElementById('procesar').addEventListener('click', function() {
     // Arrays para almacenar los valores
     let xValues = [];
     let yValues = [];
-    let valoresXY = "";
+    let valoresXY = "    X         Y\n";
+    valoresXY += "------------------\n";
     
     // Variables para estadísticas
     let yMin = Infinity;
     let yMax = -Infinity;
     let cortes = 0;
+    let yPrevio = null;
 
     // Calculamos puntos cada 0.05 unidades
     for (let x = xMin; x <= xMax; x += 0.05) {
@@ -26,15 +28,15 @@ document.getElementById('procesar').addEventListener('click', function() {
         let xRedondeado = parseFloat(x.toFixed(4));
         
         // Verificamos las restricciones del dominio
-        if ((xRedondeado + c) <= 0) continue; // Evita raíz cuadrada de número negativo
-        if ((xRedondeado + 1) <= 0) continue; // Evita raíz cuadrada de número negativo
-        if ((xRedondeado + d) === 0) continue; // Evita división por cero
+        if ((Math.abs(xRedondeado) + c) <= 0) continue; // Evita raíz cuadrada de número negativo
+        if ((Math.abs(xRedondeado) + 1) <= 0) continue; // Evita raíz cuadrada de número negativo
+        if ((Math.abs(xRedondeado) + d) === 0) continue; // Evita división por cero
 
         try {
             // Calculamos y
-            let y = (Math.sin(a * xRedondeado) + Math.cos(b * xRedondeado)) / Math.sqrt(xRedondeado + c) +
-                    (Math.cos(d * xRedondeado) + Math.sin(e * xRedondeado)) / Math.sqrt(xRedondeado + 1) +
-                    (1 / (xRedondeado + d));
+            let y = (Math.sin(a * xRedondeado) + Math.cos(b * xRedondeado)) / Math.sqrt(Math.abs(xRedondeado) + c) +
+                    (Math.cos(d * xRedondeado) + Math.sin(e * xRedondeado)) / Math.sqrt(Math.abs(xRedondeado) + 1) +
+                    (1 / (Math.abs(xRedondeado) + d));
 
             // Redondeamos y a 4 decimales
             let yRedondeado = parseFloat(y.toFixed(4));
@@ -43,12 +45,17 @@ document.getElementById('procesar').addEventListener('click', function() {
             if (isFinite(yRedondeado) && !isNaN(yRedondeado)) {
                 xValues.push(xRedondeado);
                 yValues.push(yRedondeado);
-                valoresXY += `X: ${xRedondeado}, Y: ${yRedondeado}\n`;
+                valoresXY += `${xRedondeado.toFixed(4).padStart(8, ' ')}  ${yRedondeado.toFixed(4).padStart(8, ' ')}\n`;
 
                 // Actualizamos estadísticas
                 if (yRedondeado < yMin) yMin = yRedondeado;
                 if (yRedondeado > yMax) yMax = yRedondeado;
-                if (Math.abs(yRedondeado) < 0.1) cortes++;
+                
+                // Verificamos cambio de signo para contar cortes
+                if (yPrevio !== null && (yPrevio * yRedondeado < 0)) {
+                    cortes++;
+                }
+                yPrevio = yRedondeado;
             }
         } catch (error) {
             console.log(`Error al calcular y para x = ${xRedondeado}: ${error}`);
